@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # 1. The React Frontend
+  web:
+    build: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Helps React hot-reload in Docker
+      - WATCHPACK_POLLING=true
+    networks:
+      - app-network
+    depends_on:
+      - api
+
+  # 2. The Node.js API (Bridge)
+  api:
+    build: ./api
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=redis_db
+    networks:
+      - app-network
+    depends_on:
+      - redis_db
+
+  # 3. The Redis Database
+  redis_db:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-data:
