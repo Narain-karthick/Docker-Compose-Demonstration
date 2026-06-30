@@ -103,9 +103,9 @@ docker compose version
 ## 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Narain-karthick/Docker-Compose-Demonstration.git
 
-cd <your-project-folder>
+cd <project-folder>
 ```
 
 ---
